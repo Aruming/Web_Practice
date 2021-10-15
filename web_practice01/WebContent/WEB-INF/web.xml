@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>web_practice01</display-name>
   
-  <!-- 서블릿 정의 -->
+  <!-- 서블릿 선언 -->
   <servlet>
   	<servlet-name>Hello</servlet-name>
   	<servlet-class>web_practice01.servlet.HelloWorld</servlet-class>
@@ -11,6 +11,66 @@
   	<servlet-name>Hello2</servlet-name>
   	<servlet-class>web_practice01.servlet.HelloWorld2</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>MemberListServlet</servlet-name>
+  	<servlet-class>spms.servlets.MemberListServlet</servlet-class>
+  	<init-param>
+  		<param-name>driver</param-name>
+  		<param-value>com.mysql.jdbc.Driver</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>url</param-name>
+  		<param-value>jdbc:mysql://localhost/studydb</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>username</param-name>
+  		<param-value>study</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>password</param-name>
+  		<param-value>1111</param-value>
+  	</init-param>
+  </servlet>
+  <servlet>
+  	<servlet-name>MemberAddServlet</servlet-name>
+  	<servlet-class>spms.servlets.MemberAddServlet</servlet-class>
+  	<init-param>
+  		<param-name>driver</param-name>
+  		<param-value>com.mysql.jdbc.Driver</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>url</param-name>
+  		<param-value>jdbc:mysql://localhost/studydb</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>username</param-name>
+  		<param-value>study</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>password</param-name>
+  		<param-value>1111</param-value>
+  	</init-param>
+  </servlet>
+<servlet>
+		<servlet-name>MemberUpdateServlet</servlet-name>
+		<servlet-class>spms.servlets.MemberUpdateServlet</servlet-class>
+		<init-param>
+			<param-name>driver</param-name>
+			<param-value>com.mysql.jdbc.Driver</param-value>
+		</init-param>
+		<init-param>
+			<param-name>url</param-name>
+			<param-value>jdbc:mysql://localhost/studydb</param-value>
+		</init-param>
+		<init-param>
+			<param-name>username</param-name>
+			<param-value>study</param-value>
+		</init-param>
+		<init-param>
+			<param-name>password</param-name>
+			<param-value>1111</param-value>
+		</init-param>
+	</servlet>
   
   <!-- 서블릿과 URL연결 -->
   <servlet-mapping>
@@ -20,6 +80,18 @@
   <servlet-mapping>
   	<servlet-name>Hello2</servlet-name>
   	<url-pattern>/hi</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>MemberListServlet</servlet-name>
+  	<url-pattern>/member/list</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>MemberAddServlet</servlet-name>
+  	<url-pattern>/member/add</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>MemberUpdateServlet</servlet-name>
+  	<url-pattern>/member/update</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>
