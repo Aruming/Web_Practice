@@ -9,12 +9,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.GenericServlet;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/member/list")
 public class MemberListServlet extends GenericServlet{
 
 	@Override
@@ -24,10 +24,15 @@ public class MemberListServlet extends GenericServlet{
 		ResultSet rs = null;
 		try {
 			//1. 사용할 JDBC 드라이버 등록
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-		
+			//DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			//ServletConfig config = this.getServletConfig();
+			Class.forName(this.getInitParameter("driver"));
+					
 			//2. 드라이버 사용하여 MySQL 서버와 연결
-			con = DriverManager.getConnection("jdbc:mysql://localhost/studydb", "study", "1111");
+			con = DriverManager.getConnection(
+					this.getInitParameter("url"),
+					this.getInitParameter("username"), 
+					this.getInitParameter("password"));
 			
 			//3. 커넥션 객체로부터 SQL 던질 객체 준비
 			stmt = con.createStatement();
@@ -42,14 +47,17 @@ public class MemberListServlet extends GenericServlet{
 			out.println("<h1>회원목록</h1>");
 			out.println("<p><a href='add'>신규회원</a></p>");
 			while(rs.next()) {
-				out.println(rs.getInt("MNO")+","+rs.getString("MNAME")+","+rs.getString("EMAIL")
-								+","+rs.getDate("CRE_DATE")+"<BR>");
+				out.println(rs.getInt("MNO")+","+
+				"<a href='update?no="+rs.getInt("MNO")+"'>" +
+				rs.getString("MNAME")+"</a>,"+
+				rs.getString("MNAME")+","+
+				rs.getString("EMAIL")+","+
+				rs.getDate("CRE_DATE")+"<br>");
 			}
 			out.println("</body></html>");
 			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new ServletException(e);
 		}finally {
 			try{rs.close();} catch(Exception e) {}
 			try{stmt.close();} catch(Exception e) {}
