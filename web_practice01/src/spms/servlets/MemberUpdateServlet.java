@@ -8,12 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
+@WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doGet(
@@ -23,11 +26,12 @@ public class MemberUpdateServlet extends HttpServlet {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			Class.forName(this.getInitParameter("driver"));
+			ServletContext ctx = this.getServletContext();
+			Class.forName(ctx.getInitParameter("driver"));
 			conn = DriverManager.getConnection(
-						this.getInitParameter("url"),
-						this.getInitParameter("username"),
-						this.getInitParameter("password")); 
+					ctx.getInitParameter("url"),
+					ctx.getInitParameter("username"),
+					ctx.getInitParameter("password"));
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
 				"SELECT MNO,EMAIL,MNAME,CRE_DATE FROM MEMBERS" + 
@@ -47,6 +51,9 @@ public class MemberUpdateServlet extends HttpServlet {
 				" value='" + rs.getString("EMAIL")  + "'><br>");
 			out.println("가입일: " + rs.getDate("CRE_DATE") + "<br>");
 			out.println("<input type='submit' value='저장'>");
+			out.println("<input type='button' value='삭제' "
+					+ "onclick='location.href=\"delete?no=" + 
+					request.getParameter("no") + "\";'>");		
 			out.println("<input type='button' value='취소'" + 
 				" onclick='location.href=\"list\"'>");
 			out.println("</form>");
@@ -66,15 +73,16 @@ public class MemberUpdateServlet extends HttpServlet {
 	protected void doPost(
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		//request.setCharacterEncoding("UTF-8");
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			Class.forName(this.getInitParameter("driver"));
+			ServletContext ctx = this.getServletContext();
+			Class.forName(ctx.getInitParameter("driver"));
 			conn = DriverManager.getConnection(
-						this.getInitParameter("url"),
-						this.getInitParameter("username"),
-						this.getInitParameter("password")); 
+					ctx.getInitParameter("url"),
+					ctx.getInitParameter("username"),
+					ctx.getInitParameter("password"));
 			stmt = conn.prepareStatement(
 					"UPDATE MEMBERS SET EMAIL=?,MNAME=?,MOD_DATE=now()"
 					+ " WHERE MNO=?");
